@@ -67,7 +67,7 @@ namespace EnglishTrain
         }
         public static void initialization()
         {
-            LoadDatabase();
+            loadDatabase();
             getVerbLemmas();
         }
         /// <summary>新增單字，將單字、單字的例句加進資料庫，需搭配getHTML</summary>
@@ -113,7 +113,7 @@ namespace EnglishTrain
                     }
                     sentanceDB[word] = sentences;
                     wordDB[word] = w;
-                    SaveDatabase();//儲存資料在本地端
+                    saveDatabase();//儲存資料在本地端
                     success = AddStatus.Success;
                 }
                 catch (Exception e)
@@ -227,10 +227,10 @@ namespace EnglishTrain
         {
             wordDB.Remove(WordKey);
             sentanceDB.Remove(WordKey);
-            SaveDatabase();
+            saveDatabase();
         }
         /// <summary>載入資料庫</summary>
-        public static void LoadDatabase()
+        public static void loadDatabase()
         {
             try
             {
@@ -257,16 +257,16 @@ namespace EnglishTrain
         public static void weightIncrease(string word)
         {
             wordDB[word].weight++;
-            SaveDatabase();
+            saveDatabase();
         }
         /// <summary>減少單字權重</summary>
         public static void weightDecrease(string word)
         {
             wordDB[word].weight--;
-            SaveDatabase();
+            saveDatabase();
         }
         /// <summary>儲存資料庫</summary>
-        private static void SaveDatabase()
+        private static void saveDatabase()
         {
             using (FileStream oFileStream = new FileStream($"{debugPath}\\wordDB.txt", FileMode.Create))
             {
