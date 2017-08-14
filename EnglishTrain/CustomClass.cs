@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,9 +7,54 @@ using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using NSoup;
 using System.Text;
+using System.Windows.Controls;
 
 namespace EnglishTrain
 {
+    class AutoChangeWindowsSize
+    {
+        private double Width ;
+        private double Height ;
+        public static IEnumerable<T> FindLogicalChildren<T>(DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj != null)
+            {
+                foreach (object rawChild in LogicalTreeHelper.GetChildren(depObj))
+                {
+                    if (rawChild is DependencyObject)
+                    {
+                        DependencyObject child = (DependencyObject)rawChild;
+                        if (child is T)
+                        {
+                            yield return (T)child;
+                        }
+
+                        foreach (T childOfChild in FindLogicalChildren<T>(child))
+                        {
+                            yield return childOfChild;
+                        }
+                    }
+                }
+            }
+        }
+        public AutoChangeWindowsSize(Window window)
+        {
+            Width = SystemParameters.PrimaryScreenWidth;
+            Height = SystemParameters.PrimaryScreenHeight;
+            window.SizeChanged += Window_SizeChanged;
+            StringBuilder str = new StringBuilder();
+            foreach (var c in FindLogicalChildren<Control>(window))
+            {
+                str.AppendLine(c.GetType().ToString());
+            }
+            MessageBox.Show(str.ToString());
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            
+        }
+    }
     //Yahoo爬下來的資料中，一個英文單字有多種詞性，一個詞性有0~N種中文意思，一個中文意思有多個例句
     [Serializable]
     /// <summary>單字類別，含詞性、中文意思、權重等。</summary>
