@@ -14,6 +14,7 @@ namespace EnglishTrain
         public ImportWordWindow()
         {
             InitializeComponent();
+            AutoChangeWindowsFontSize autoChangeFontSize = new AutoChangeWindowsFontSize(this, 1920);
         }
         private void DataProcessing(string wordsString)//處理TextBox文字(將新單字匯入資料庫)
         {

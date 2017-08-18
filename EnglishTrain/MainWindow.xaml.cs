@@ -8,6 +8,7 @@ namespace EnglishTrain
         {
             InitializeComponent();
             DataBase.initialization();
+            AutoChangeWindowsFontSize autoChangeFontSize = new AutoChangeWindowsFontSize(this,1920);
         }
 
         private void WordButton_Click(object sender, RoutedEventArgs e)

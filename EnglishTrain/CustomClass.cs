@@ -11,10 +11,11 @@ using System.Windows.Controls;
 
 namespace EnglishTrain
 {
-    class AutoChangeWindowsSize
+    /// <summary>自動改變WPF視窗字體大小。</summary>
+    class AutoChangeWindowsFontSize
     {
-        private double Width ;
-        private double Height ;
+        private double UserResolutionWidth, defaultResolutionWidth, scale, preWindowWidth;
+        Window window;
         public static IEnumerable<T> FindLogicalChildren<T>(DependencyObject depObj) where T : DependencyObject
         {
             if (depObj != null)
@@ -37,22 +38,28 @@ namespace EnglishTrain
                 }
             }
         }
-        public AutoChangeWindowsSize(Window window)
+        public AutoChangeWindowsFontSize(Window window, double defaultResolutionWidth)
         {
-            Width = SystemParameters.PrimaryScreenWidth;
-            Height = SystemParameters.PrimaryScreenHeight;
-            window.SizeChanged += Window_SizeChanged;
+            UserResolutionWidth = SystemParameters.PrimaryScreenWidth;
+            this.defaultResolutionWidth = defaultResolutionWidth;
+            preWindowWidth = window.Width;
+            this.window = window;
+            this.window.SizeChanged += Window_SizeChanged;
+            scale = UserResolutionWidth / defaultResolutionWidth;
             StringBuilder str = new StringBuilder();
             foreach (var c in FindLogicalChildren<Control>(window))
             {
-                str.AppendLine(c.GetType().ToString());
+                c.FontSize = c.FontSize * scale;
             }
-            MessageBox.Show(str.ToString());
         }
-
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            
+            double scaleWidth = window.ActualWidth / preWindowWidth;
+            preWindowWidth = window.ActualWidth;
+            foreach (var c in FindLogicalChildren<Control>(window))
+            {
+                c.FontSize = c.FontSize * scaleWidth;
+            }
         }
     }
     //Yahoo爬下來的資料中，一個英文單字有多種詞性，一個詞性有0~N種中文意思，一個中文意思有多個例句

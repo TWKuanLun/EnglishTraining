@@ -28,6 +28,7 @@ namespace EnglishTrain
             VoiceTubePlayer = new WindowsMediaPlayer();
             YahooPlayer.MediaError += YahooPlayer_MediaError;//如果播放失敗
             updataList();
+            AutoChangeWindowsFontSize autoChangeFontSize = new AutoChangeWindowsFontSize(this, 1920);
         }
 
         private void updataList()//更新listbox

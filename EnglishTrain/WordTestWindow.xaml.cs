@@ -30,6 +30,7 @@ namespace EnglishTrain
             VoiceTubePlayer = new WMPLib.WindowsMediaPlayer();
             GooglePlayer = new WMPLib.WindowsMediaPlayer();
             setTest();
+            AutoChangeWindowsFontSize autoChangeFontSize = new AutoChangeWindowsFontSize(this, 1920);
         }
         /// <summary>以權重值獲得隨機的單字</summary>
         private string GetRandomWord()
