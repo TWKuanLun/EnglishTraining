@@ -87,3 +87,5 @@ G:\程式\20151104程式備份\EnglishTrain\EnglishTrain\obj\Debug\WordTestWindo
 G:\程式\20151104程式備份\EnglishTrain\EnglishTrain\obj\Debug\EnglishTrain.g.resources
 G:\程式\20151104程式備份\EnglishTrain\EnglishTrain\obj\Debug\EnglishTrain.Properties.Resources.resources
 G:\程式\20151104程式備份\EnglishTrain\EnglishTrain\obj\Debug\EnglishTrain.csproj.GenerateResource.Cache
+d:\users\bone\documents\visual studio 2015\Projects\EnglishTrain\EnglishTrain\obj\Debug\Dictionary.g.cs
+d:\users\bone\documents\visual studio 2015\Projects\EnglishTrain\EnglishTrain\obj\Debug\Dictionary.baml

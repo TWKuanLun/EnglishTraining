@@ -31,5 +31,12 @@ namespace EnglishTrain
             Close();
             dbw.Show();
         }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            Dictionary d = new Dictionary();
+            Close();
+            d.Show();
+        }
     }
 }

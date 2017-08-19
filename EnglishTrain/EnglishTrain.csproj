@@ -64,6 +64,9 @@
     <Compile Include="DatabaseWindow.xaml.cs">
       <DependentUpon>DatabaseWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dictionary.xaml.cs">
+      <DependentUpon>Dictionary.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImportWordWindow.xaml.cs">
       <DependentUpon>ImportWordWindow.xaml</DependentUpon>
     </Compile>
@@ -74,6 +77,10 @@
       <DependentUpon>WordTestWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="DatabaseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
