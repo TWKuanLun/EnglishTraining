@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using static EnglishTrain.DataBase;
@@ -14,12 +15,12 @@ namespace EnglishTrain
         public Dictionary()
         {
             InitializeComponent();
-            //ShowWordExplain swe = new ShowWordExplain("phone", AutoGrid);
             AutoChangeWindowsFontSize acwf = new AutoChangeWindowsFontSize(this, 1920);
         }
         private void process()
         {
-            string word = getVerbRoot(getSingularNoun(wordTextBox.Text));
+            string word = Regex.Replace(wordTextBox.Text, "[.']", "", RegexOptions.IgnoreCase);//去除'和.
+            word = getSingularNoun(getVerbRoot(word));//獲得原型動詞與單數
             if (word.Equals(String.Empty))
                 return;
             if (wordDB.Keys.Contains(word))
@@ -32,9 +33,11 @@ namespace EnglishTrain
                 addWordData(word, getHTML(word), out addStatus);
                 if (addStatus == AddStatus.SearchFail)
                 {
-                    MessageBox.Show($"{word}新增失敗，Yahoo查無此單字\n");
+                    MessageBox.Show($"Yahoo查無此單字：{word}\n");
+                }else
+                {
+                    ShowWordExplain showWordExplain = new ShowWordExplain(word, ShowGrid);
                 }
-                ShowWordExplain showWordExplain = new ShowWordExplain(word, ShowGrid);
             }
         }
         private void SearchButton_Click(object sender, RoutedEventArgs e)

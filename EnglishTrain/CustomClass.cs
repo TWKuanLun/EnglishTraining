@@ -27,17 +27,14 @@ namespace EnglishTrain
         public readonly string phoneticSymbol;
         /// <summary>給詞性Key獲得中文解釋List</summary>
         public Dictionary<string, List<string>> chineseMeaning = new Dictionary<string, List<string>>();
-        /// <summary>直接ToString的解釋</summary>
-        private readonly string explanation ;
-        public Word(string word,string phonetic,string exp)
+        public Word(string word,string phonetic)
         {
             this.word = word;
             this.phoneticSymbol = phonetic;
-            explanation = exp;
         }
         public override string ToString()
         {
-            return explanation;
+            return word;
         }
     }
     [Serializable]
@@ -90,7 +87,7 @@ namespace EnglishTrain
                     var meaningBlock = allBlock.GetElementsByTag("ul").Where(x => x.Attr("class") == "compArticleList mb-15 ml-10").ToArray();
                     var phonetic = htmlDoc.GetElementsByTag("span").First(x => x.Attr("class") == "cite").Text();
                     
-                    Word w = new Word(word, phonetic.Replace('ˋ', '`'), getWordExplanation(htmlstr));//給word物件單字和音標
+                    Word w = new Word(word, phonetic.Replace('ˋ', '`'));//給word物件單字和音標
                     List<Sentence> sentences = new List<Sentence>();
 
                     var parts = allBlock.GetElementsByTag("h3");
@@ -142,42 +139,6 @@ namespace EnglishTrain
             sr.Close();
             myResponse.Close();
             return htmlSourceCode;
-        }
-        public static string getWordExplanation(string htmlSourceCode)//獲得Tosting的文字
-        {
-            NSoup.Nodes.Document htmlDoc = NSoup.NSoupClient.Parse(htmlSourceCode);
-            StringBuilder strBuilder = new StringBuilder();
-            try
-            {
-                var allBlock = htmlDoc.GetElementsByTag("div").First(x => x.Attr("class") == "dd algo explain mt-20 lst DictionaryResults");
-                var meaningBlock = allBlock.GetElementsByTag("ul").Where(x => x.Attr("class") == "compArticleList mb-15 ml-10").ToArray();
-                var wordstr = htmlDoc.GetElementsByTag("span").First(x => x.Attr("class") == " mr-15").Text();
-                strBuilder.AppendLine(wordstr);
-                var phonetic = htmlDoc.GetElementsByTag("span").First(x => x.Attr("class") == "cite").Text();
-                strBuilder.AppendLine(phonetic);
-                var parts = allBlock.GetElementsByTag("h3");
-                for (int i = 0; i < parts.Count; i++)
-                {
-                    strBuilder.AppendLine(parts[i].Text());//詞性
-                    var ttt = meaningBlock[i].GetElementsByTag("li");
-                    foreach (var sss in ttt)
-                    {
-                        var sentence = sss.GetElementsByTag("span").ToArray();
-                        strBuilder.Append("　　");
-                        strBuilder.AppendLine(sentence[0].Text());//中文意思
-                        for (int j = 1; j < sentence.Length - 1; j += 2)
-                        {
-                            strBuilder.Append("　　　　");
-                            strBuilder.AppendLine(sentence[j].Text());//例句
-                        }
-                    }
-                }
-                return strBuilder.ToString();
-            }
-            catch (Exception e)
-            {
-                return $"查無此單字解釋，{e}";
-            }
         }
 
         private static Dictionary<string, string> verb_lemmas = new Dictionary<string, string>();//動詞型態字典
@@ -423,26 +384,26 @@ namespace EnglishTrain
             googleButton.Content = "_Google(▶)";
             googleButton.Background = Brushes.Black;
             googleButton.Foreground = Brushes.White;
-            googleButton.FontSize = 40;
+            googleButton.FontSize = 30;
             googleButton.Click += GoogleButton_Click;
             Button voiceTubeButton = new Button();
             voiceTubeButton.Content = "_VoiceTube(▶)";
             voiceTubeButton.Background = Brushes.Black;
             voiceTubeButton.Foreground = Brushes.White;
-            voiceTubeButton.FontSize = 40;
+            voiceTubeButton.FontSize = 30;
             voiceTubeButton.Click += VoiceTubeButton_Click;
             Button yahooButton = new Button();
             yahooButton.Content = "_Yahoo(▶)";
             yahooButton.Background = Brushes.Black;
             yahooButton.Foreground = Brushes.White;
-            yahooButton.FontSize = 40;
+            yahooButton.FontSize = 30;
             yahooButton.Click += YahooButton_Click;
             Button yahooButton2 = new Button();
             this.yahooButton2 = yahooButton2;
             yahooButton2.Content = "_Yahoo2(▶)";
             yahooButton2.Background = Brushes.Black;
             yahooButton2.Foreground = Brushes.White;
-            yahooButton2.FontSize = 40;
+            yahooButton2.FontSize = 30;
             yahooButton2.Visibility = Visibility.Hidden;
             yahooButton2.Click += YahooButton2_Click;
             Grid.SetColumn(wordLabel, 0);
@@ -554,20 +515,8 @@ namespace EnglishTrain
         {
             Button b = (Button)sender;
             string word = b.Content.ToString().Substring(0, b.Content.ToString().Length - 1);//去除空白
-            word = Regex.Replace(word, "[.']", "", RegexOptions.IgnoreCase);//去除'和.
-            word = DataBase.getVerbRoot(word);//給出動詞字根
-            word = DataBase.getSingularNoun(word);//給出單數名詞
-            string html = DataBase.getHTML(word);
-            string result = DataBase.getWordExplanation(html);
-            if (result.Equals("search error"))
-            {
-                MessageBox.Show("找不到該單字！");
-            }
-            else
-            {
-                wordExplanationWindow wordWindow = new wordExplanationWindow(result, word, html);//取得HTML並用python擷取單字解釋
-                wordWindow.Show();
-            }
+            wordExplanationWindow wordWindow = new wordExplanationWindow(word);
+            wordWindow.Show();
         }
 
         private void VoiceTubeButton_Click(object sender, RoutedEventArgs e)

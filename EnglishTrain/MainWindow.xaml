@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EnglishTrain"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="MainWindow" Height="702" Width="1246">
+        Title="Bone英文聽力訓練程式" Height="702" Width="1246">
     
     <Grid>
         <Grid.RowDefinitions>

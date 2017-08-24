@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EnglishTrain" WindowStartupLocation="CenterScreen"
         mc:Ignorable="d" Name="window" Background="Black"
-        Title="ImportWordWindow" Height="702" Width="1246">
+        Title="單字批次匯入功能" Height="702" Width="1246">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

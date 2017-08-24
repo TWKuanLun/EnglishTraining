@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EnglishTrain"
         mc:Ignorable="d" Background="Black" WindowStartupLocation="CenterScreen"
-        Title="DatabaseWindow" Height="702" Width="1246">
+        Title="已儲存的單字" Height="702" Width="1246">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
@@ -33,7 +33,7 @@
                 <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
             <ListBox Name="WordListBox" Grid.Column="0" FontSize="27" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Black" Foreground="White"/>
-            
+            <Button Content="Refresh" FontSize="16" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Click="RefreshButton_Click"/>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>

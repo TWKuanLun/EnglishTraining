@@ -208,20 +208,8 @@ namespace EnglishTrain
         {
             Button b = (Button)sender;
             string word = b.Content.ToString().Substring(0, b.Content.ToString().Length - 1);//去除空白
-            word = Regex.Replace(word, "[.']", "", RegexOptions.IgnoreCase);//去除'和.
-            word = DataBase.getVerbRoot(word);//給出動詞字根
-            word = DataBase.getSingularNoun(word);//給出單數名詞
-            string html = DataBase.getHTML(word);
-            string result = DataBase.getWordExplanation(html);
-            if (result.Equals("search error"))
-            {
-                MessageBox.Show("找不到該單字！");
-            }
-            else
-            {
-                wordExplanationWindow wordWindow = new wordExplanationWindow(result, word, html);//取得HTML並用python擷取單字解釋
-                wordWindow.Show();
-            }
+            wordExplanationWindow wordWindow = new wordExplanationWindow(word);
+            wordWindow.Show();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -257,6 +245,11 @@ namespace EnglishTrain
                 VoiceTubePlayer.controls.currentPosition = 0;
                 VoiceTubePlayer.controls.play();
             }
+        }
+
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            updataList();
         }
     }
 }

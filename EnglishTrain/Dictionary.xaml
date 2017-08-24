@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EnglishTrain"
         mc:Ignorable="d" Background="Black" WindowStartupLocation="CenterScreen"
-        Title="Dictionary" Height="702" Width="1246">
+        Title="字典搜尋" Height="702" Width="1246">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
