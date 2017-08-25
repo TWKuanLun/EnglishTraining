@@ -8,6 +8,7 @@ namespace EnglishTrain
     public partial class wordExplanationWindow : Window
     {
         string word;
+        bool save = false;
         
         public wordExplanationWindow(string word)
         {
@@ -38,6 +39,7 @@ namespace EnglishTrain
 
         private void YesButton_Click(object sender, RoutedEventArgs e)
         {
+            save = true;
             Close();
         }
 
@@ -49,8 +51,8 @@ namespace EnglishTrain
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            removeWord(word);
-            Close();
+            if(!save)
+                removeWord(word);
         }
     }
 }
