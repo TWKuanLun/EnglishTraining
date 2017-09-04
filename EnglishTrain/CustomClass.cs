@@ -320,6 +320,8 @@ namespace EnglishTrain
         WindowsMediaPlayer GooglePlayer;
         /// <summary>單字VoiceTube發音</summary>
         WindowsMediaPlayer VoiceTubePlayer;
+        /// <summary>句子Google發音</summary>
+        List<WindowsMediaPlayer> SentencePlayer = new List<WindowsMediaPlayer>();
         string word;
         Button yahooButton2;
         public ShowWordExplain(string word, Grid mainGrid)
@@ -419,6 +421,7 @@ namespace EnglishTrain
             #endregion
             #region dataGrid設定 含詞性、中文意思、例句
             int gridRowIndex = 0;
+            int sentenceCount = 0;
             foreach (KeyValuePair<string, List<string>> m in DataBase.wordDB[word].chineseMeaning)
             {
                 #region 詞性設定
@@ -447,7 +450,6 @@ namespace EnglishTrain
                     var searchSentence = DataBase.sentanceDB[word].Select(x => x).Where(x => (x.PartOfSpeech == m.Key && x.ChiMeaningIndex == i));
                     foreach (Sentence s in searchSentence)
                     {
-
                         #region 英文例句設定
                         dataGrid.RowDefinitions.Add(new RowDefinition());
                         var sentenceGrid = new Grid();
@@ -476,6 +478,21 @@ namespace EnglishTrain
                             Grid.SetColumn(button, j + 1);
                             sentenceGrid.Children.Add(button);
                         }
+                        #region 句子發音
+                        SentencePlayer.Add(new WMPLib.WindowsMediaPlayer { URL = $"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q={s.Eng}" });
+                        SentencePlayer[sentenceCount].controls.stop();
+                        sentenceGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                        sentenceGrid.ColumnDefinitions[sentanceWords.Length + 1].Width = GridLength.Auto;
+                        var SentenceVoiceButton = new Button();
+                        SentenceVoiceButton.Tag = sentenceCount;
+                        SentenceVoiceButton.Content = $"_{sentenceCount}Play";
+                        SentenceVoiceButton.Background = Brushes.Black;
+                        SentenceVoiceButton.Foreground = Brushes.White;
+                        SentenceVoiceButton.FontSize = 22;
+                        SentenceVoiceButton.Click += SentenceVoiceButton_Click;
+                        Grid.SetColumn(SentenceVoiceButton, sentanceWords.Length + 1);
+                        sentenceGrid.Children.Add(SentenceVoiceButton);
+                        #endregion
                         Grid.SetRow(sentenceGrid, gridRowIndex);
                         dataGrid.Children.Add(sentenceGrid);
                         gridRowIndex++;
@@ -490,11 +507,24 @@ namespace EnglishTrain
                         dataGrid.Children.Add(clabel);
                         gridRowIndex++;
                         #endregion
+                        sentenceCount++;
                     }
                 }
             }
             #endregion
         }
+
+        private void SentenceVoiceButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button b = (Button)sender;
+            foreach (WMPLib.WindowsMediaPlayer p in SentencePlayer)
+            {
+                p.controls.pause();
+            }
+            SentencePlayer[(int)b.Tag].controls.currentPosition = 0;
+            SentencePlayer[(int)b.Tag].controls.play();
+        }
+
         int status = 0;
         private void YahooPlayer_MediaError(object pMediaObject)
         {

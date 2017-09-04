@@ -34,32 +34,7 @@
             </Grid.ColumnDefinitions>
             <ListBox Name="WordListBox" Grid.Column="0" FontSize="27" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Black" Foreground="White"/>
             <Button Content="Refresh" FontSize="16" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Click="RefreshButton_Click"/>
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Name="wordlabel" Foreground="SkyBlue" FontSize="45"/>
-                    <Button Grid.Column="1" Content="_Google(▶)" Name="googleButton" Background="Black" Foreground="White" FontSize="30" Click="GoogleButton_Click"/>
-                    <Button Grid.Column="3" Content="_Yahoo(▶)" Name="yahooButton" Background="Black" Foreground="White" FontSize="30" Click="YahooButton_Click"/>
-                    <Button Grid.Column="4" Content="_Yahoo2(▶)" Name="yahooButton2" Visibility="Hidden" Background="Black" Foreground="White" FontSize="30" Click="YahooButton2_Click"/>
-                    <Button Grid.Column="2" Content="_VoiceTube(▶)" Name="voiceTubeButton" Background="Black" Foreground="White" FontSize="30" Click="VoiceTubeButton_Click"/>
-                </Grid>
-                <Label Grid.Row="1" Name="phoneticlabel" Foreground="SpringGreen" FontSize="22"/>
-                <ScrollViewer Grid.Row="2">
-                    <Grid Name="dataGrid" VerticalAlignment="Top"/>
-                </ScrollViewer>
-            </Grid>
-            
+            <Grid Name="showWordGrid" Grid.Column="1"/>
         </Grid>
     </Grid>
 </Window>
