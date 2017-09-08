@@ -13,10 +13,11 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="6*"/>
             </Grid.ColumnDefinitions>
-            <Grid>
+            <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -25,7 +26,17 @@
                 <Button Grid.Row="0" FontSize="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Black" Foreground="White" Content="_Back" Click="BackButton_Click"/>
                 <TextBox Grid.Row="1" Name="SearchTextBox" FontSize="40" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Black" Foreground="White" TextChanged="TextBox_TextChanged"/>
             </Grid>
-            <Button Grid.Column="1" FontSize="50" Click="RemoveButton_Click" Content="刪除選取的單字" Foreground="White" Background="Black"/>
+            <Button Grid.Column="1" FontSize="25" Click="RemoveButton_Click" Content="刪除選取的單字" Foreground="White" Background="Black"/>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="4*"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" FontSize="15" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Black" Foreground="White" Content="筆記/註解/備忘錄(綁定該選取單字)"/>
+                <ScrollViewer Grid.Row="4">
+                    <TextBox Name="remarkTB" FontSize="20" Background="Black" Foreground="White" AcceptsReturn="True" IsEnabled="False"/>
+                </ScrollViewer>
+            </Grid>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

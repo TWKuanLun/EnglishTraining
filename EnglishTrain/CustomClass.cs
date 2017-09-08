@@ -10,7 +10,6 @@ using System.Text;
 using System.Windows.Controls;
 using System.Windows.Media;
 using WMPLib;
-using System.Text.RegularExpressions;
 
 namespace EnglishTrain
 {
@@ -27,6 +26,8 @@ namespace EnglishTrain
         public readonly string phoneticSymbol;
         /// <summary>給詞性Key獲得中文解釋List</summary>
         public Dictionary<string, List<string>> chineseMeaning = new Dictionary<string, List<string>>();
+        /// <summary>備註</summary>
+        public string remark { get; set; } = string.Empty;
         public Word(string word,string phonetic)
         {
             this.word = word;
@@ -254,6 +255,12 @@ namespace EnglishTrain
                 oFileStream.Close();
                 oFileStream.Dispose();
             }
+        }
+        /// <summary>儲存單字筆記</summary>
+        public static void seveWordRemark(string word, string remark)
+        {
+            wordDB[word].remark = remark;
+            saveDatabase();
         }
     }
 
