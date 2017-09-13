@@ -93,7 +93,7 @@ namespace EnglishTrain
                     label.Content = DataBase.sentanceDB[wordstr][i].Chi;
                     label.Visibility = Visibility.Hidden;
                     label.Foreground = Brushes.Gainsboro;
-                    label.FontSize = 29;
+                    label.FontSize = 45;
                     string[] sentanceWords = DataBase.sentanceDB[wordstr][i].Eng.Split(new char[] {' '});
                     grid.HorizontalAlignment = HorizontalAlignment.Left;
                     grid.Visibility = Visibility.Hidden;
@@ -110,7 +110,7 @@ namespace EnglishTrain
                         button.BorderThickness = new Thickness(0);//按鈕框線粗細，0=看不到框線
                         button.Background = Brushes.Black;
                         button.Foreground = Brushes.Pink;
-                        button.FontSize = 29;
+                        button.FontSize = 45;
                         button.Click += Button_Click;
                         Grid.SetColumn(button, j);
                         grid.Children.Add(button);
@@ -121,7 +121,7 @@ namespace EnglishTrain
                     grid.ColumnDefinitions.Add(column2);
                     var sentanceVoiceButton = new Button();
                     sentanceVoiceButton.Content = $"_{i}Play";
-                    sentanceVoiceButton.FontSize = 29;
+                    sentanceVoiceButton.FontSize = 45;
                     sentanceVoiceButton.Tag = i;
                     sentanceVoiceButton.VerticalAlignment = VerticalAlignment.Center;
                     sentanceVoiceButton.Click += SentanceVoiceButton_Click;

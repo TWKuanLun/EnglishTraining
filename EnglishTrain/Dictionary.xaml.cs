@@ -19,7 +19,7 @@ namespace EnglishTrain
         }
         private void process()
         {
-            string word = Regex.Replace(wordTextBox.Text, "[.']", "", RegexOptions.IgnoreCase);//去除'和.
+            string word = Regex.Replace(wordTextBox.Text, "[.,']", "", RegexOptions.IgnoreCase);//去除'和.和,
             word = getSingularNoun(getVerbRoot(word));//獲得原型動詞與單數
             if (word.Equals(String.Empty))
                 return;

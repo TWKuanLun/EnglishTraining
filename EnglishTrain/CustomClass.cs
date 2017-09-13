@@ -13,6 +13,8 @@ using WMPLib;
 
 namespace EnglishTrain
 {
+    //新構想: 靜態只儲存List<string> words，當作Key，其餘資料都去資料夾內取得，下此單字時全部下載下來
+    
     //Yahoo爬下來的資料中，一個英文單字有多種詞性，一個詞性有0~N種中文意思，一個中文意思有多個例句
     [Serializable]
     /// <summary>單字類別，含詞性、中文意思、權重等。</summary>
@@ -262,6 +264,22 @@ namespace EnglishTrain
             wordDB[word].remark = remark;
             saveDatabase();
         }
+        /// <summary>下載網路檔案方法</summary>
+        private static void WebDownloadFile(string source, string destination)
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add("User-Agent: Other");
+                try
+                {
+                    client.DownloadFile(new Uri(source), destination);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(DateTime.Now + e.Message);
+                }
+            }
+        }
     }
 
     /// <summary>自動改變WPF視窗字體大小的Class。</summary>
@@ -362,7 +380,7 @@ namespace EnglishTrain
             Label phoneticLabel = new Label();
             phoneticLabel.Content = DataBase.wordDB[word].phoneticSymbol;
             phoneticLabel.Foreground = Brushes.SpringGreen;
-            phoneticLabel.FontSize = 22;
+            phoneticLabel.FontSize = 35;
             #endregion
             ScrollViewer scrollViewer = new ScrollViewer();
             Grid dataGrid = new Grid();
@@ -388,31 +406,31 @@ namespace EnglishTrain
             Label wordLabel = new Label();
             wordLabel.Content = DataBase.wordDB[word].word;
             wordLabel.Foreground = Brushes.SkyBlue;
-            wordLabel.FontSize = 55;
+            wordLabel.FontSize = 85;
             Button googleButton = new Button();
             googleButton.Content = "_Google(▶)";
             googleButton.Background = Brushes.Black;
             googleButton.Foreground = Brushes.White;
-            googleButton.FontSize = 30;
+            googleButton.FontSize = 47;
             googleButton.Click += GoogleButton_Click;
             Button voiceTubeButton = new Button();
             voiceTubeButton.Content = "_VoiceTube(▶)";
             voiceTubeButton.Background = Brushes.Black;
             voiceTubeButton.Foreground = Brushes.White;
-            voiceTubeButton.FontSize = 30;
+            voiceTubeButton.FontSize = 47;
             voiceTubeButton.Click += VoiceTubeButton_Click;
             Button yahooButton = new Button();
             yahooButton.Content = "_Yahoo(▶)";
             yahooButton.Background = Brushes.Black;
             yahooButton.Foreground = Brushes.White;
-            yahooButton.FontSize = 30;
+            yahooButton.FontSize = 47;
             yahooButton.Click += YahooButton_Click;
             Button yahooButton2 = new Button();
             this.yahooButton2 = yahooButton2;
             yahooButton2.Content = "_Yahoo2(▶)";
             yahooButton2.Background = Brushes.Black;
             yahooButton2.Foreground = Brushes.White;
-            yahooButton2.FontSize = 30;
+            yahooButton2.FontSize = 47;
             yahooButton2.Visibility = Visibility.Hidden;
             yahooButton2.Click += YahooButton2_Click;
             Grid.SetColumn(wordLabel, 0);
@@ -436,7 +454,7 @@ namespace EnglishTrain
                 var partOfSpeechlabel = new Label();
                 partOfSpeechlabel.Content = m.Key;
                 partOfSpeechlabel.Foreground = Brushes.Lavender;
-                partOfSpeechlabel.FontSize = 30;
+                partOfSpeechlabel.FontSize = 47;
                 Grid.SetRow(partOfSpeechlabel, gridRowIndex);
                 dataGrid.Children.Add(partOfSpeechlabel);
                 gridRowIndex++;
@@ -448,7 +466,7 @@ namespace EnglishTrain
                     var chiMeaninglabel = new Label();
                     chiMeaninglabel.Content = $"　{m.Value[i]}";
                     chiMeaninglabel.Foreground = Brushes.PapayaWhip;
-                    chiMeaninglabel.FontSize = 30;
+                    chiMeaninglabel.FontSize = 47;
                     Grid.SetRow(chiMeaninglabel, gridRowIndex);
                     dataGrid.Children.Add(chiMeaninglabel);
                     gridRowIndex++;
@@ -467,7 +485,7 @@ namespace EnglishTrain
                         sentenceGrid.ColumnDefinitions[0].Width = GridLength.Auto;
                         var Emptylabel = new Label();
                         Emptylabel.Content = $"　　　";
-                        Emptylabel.FontSize = 22;
+                        Emptylabel.FontSize = 35;
                         Grid.SetRow(Emptylabel, 0);
                         sentenceGrid.Children.Add(Emptylabel);
                         #endregion
@@ -480,7 +498,7 @@ namespace EnglishTrain
                             button.BorderThickness = new Thickness(0);//按鈕框線粗細，0=看不到框線
                             button.Background = Brushes.Black;
                             button.Foreground = Brushes.Pink;
-                            button.FontSize = 22;
+                            button.FontSize = 35;
                             button.Click += Button_Click;
                             Grid.SetColumn(button, j + 1);
                             sentenceGrid.Children.Add(button);
@@ -495,7 +513,7 @@ namespace EnglishTrain
                         SentenceVoiceButton.Content = $"_{sentenceCount}Play";
                         SentenceVoiceButton.Background = Brushes.Black;
                         SentenceVoiceButton.Foreground = Brushes.White;
-                        SentenceVoiceButton.FontSize = 22;
+                        SentenceVoiceButton.FontSize = 35;
                         SentenceVoiceButton.Click += SentenceVoiceButton_Click;
                         Grid.SetColumn(SentenceVoiceButton, sentanceWords.Length + 1);
                         sentenceGrid.Children.Add(SentenceVoiceButton);
@@ -509,7 +527,7 @@ namespace EnglishTrain
                         var clabel = new Label();
                         clabel.Content = $"　　　 {s.Chi}";
                         clabel.Foreground = Brushes.Gainsboro;
-                        clabel.FontSize = 22;
+                        clabel.FontSize = 35;
                         Grid.SetRow(clabel, gridRowIndex);
                         dataGrid.Children.Add(clabel);
                         gridRowIndex++;

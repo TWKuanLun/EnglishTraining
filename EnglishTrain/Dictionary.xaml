@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EnglishTrain"
-        mc:Ignorable="d" Background="Black" WindowStartupLocation="CenterScreen"
-        Title="字典搜尋" Height="702" Width="1246">
+        mc:Ignorable="d" Background="Black" WindowStartupLocation="CenterScreen" WindowState="Maximized" 
+        Title="字典搜尋" Height="1080" Width="1920">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -18,10 +18,10 @@
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="_Back↶" FontSize="30" Click="BackButton_Click"/>
-            <Label Grid.Column="1" Content="Yahoo單字查詢：" Foreground="White" FontSize="40" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-            <TextBox Grid.Column="2" Name="wordTextBox" Foreground="White" Background="Black" FontSize="45" KeyDown="wordTextBox_KeyDown" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Button Grid.Column="3" Content="_Search搜尋" Foreground="White" Background="Black" FontSize="45" Click="SearchButton_Click"/>
+            <Button Grid.Column="0" Content="_Back↶" FontSize="47" Click="BackButton_Click"/>
+            <Label Grid.Column="1" Content="Yahoo單字查詢：" Foreground="White" FontSize="62" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <TextBox Grid.Column="2" Name="wordTextBox" Foreground="White" Background="Black" FontSize="70" KeyDown="wordTextBox_KeyDown" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Grid.Column="3" Content="_Search搜尋" Foreground="White" Background="Black" FontSize="70" Click="SearchButton_Click"/>
         </Grid>
         <Grid Grid.Row="1" Name="ShowGrid"/>
 

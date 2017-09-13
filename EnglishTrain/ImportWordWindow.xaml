@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EnglishTrain" WindowStartupLocation="CenterScreen"
+        xmlns:local="clr-namespace:EnglishTrain" WindowStartupLocation="CenterScreen" WindowState="Maximized"
         mc:Ignorable="d" Name="window" Background="Black"
-        Title="單字批次匯入功能" Height="702" Width="1246">
+        Title="單字批次匯入功能" Height="1080" Width="1920">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -15,12 +15,12 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label Grid.Row="1">
-            <TextBlock TextWrapping="Wrap" FontSize="30"  Foreground="White"  Text="在下面Textbox內輸入多個單字，以換行做區隔，按Import後會去網路爬這些單字的資料。"/>
+            <TextBlock TextWrapping="Wrap" FontSize="47"  Foreground="White"  Text="在下面Textbox內輸入多個單字，以換行做區隔，按Import後會去網路爬這些單字的資料。"/>
         </Label>
-        <Button Name="BackButton" FontSize="30" Content="_Back↶" HorizontalAlignment="Left" Click="BackButton_Click"/>
-        <TextBox Name="inputTextBox" Grid.Row="2" FontSize="18" TextWrapping="Wrap" Background="Black" Foreground="White" AcceptsReturn="True"  VerticalScrollBarVisibility="Visible"/>
-        <Button Grid.Row="3" Content="_Import" FontSize="40" Click="Button_Click" Background="Black" Foreground="White" IsEnabled="True" Name="importButton"/>
+        <Button Name="BackButton" FontSize="47" Content="_Back↶" HorizontalAlignment="Left" Click="BackButton_Click"/>
+        <TextBox Name="inputTextBox" Grid.Row="2" FontSize="60" TextWrapping="Wrap" Background="Black" Foreground="White" AcceptsReturn="True"  VerticalScrollBarVisibility="Visible"/>
+        <Button Grid.Row="3" Content="_Import" FontSize="62" Click="Button_Click" Background="Black" Foreground="White" IsEnabled="True" Name="importButton"/>
         <ProgressBar Grid.Row="4" Minimum="0" Maximum="100" Value="0" Name="pbStatus"/>
-        <TextBlock Grid.Row="4" Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <TextBlock Grid.Row="4" Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Grid>
 </Window>

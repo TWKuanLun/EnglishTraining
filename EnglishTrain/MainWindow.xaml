@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EnglishTrain"
-        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="Bone英文聽力訓練程式" Height="702" Width="1246">
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        Title="Bone英文聽力訓練程式" Height="1020" Width="1920">
     
     <Grid>
         <Grid.RowDefinitions>
@@ -14,9 +14,9 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Content="_SearchWord單字查詢" FontSize="80" Background="Black" Foreground="White" Click="SearchButton_Click"/>
-        <Button Grid.Row="1" Content="_WordTest單字測驗" FontSize="80" Background="Black" Foreground="White" Click="WordButton_Click"/>
-        <Button Grid.Row="2" Content="_AddWord新增單字" FontSize="80" Background="Black" Foreground="White" Click="AddWordButton_Click"/>
-        <Button Grid.Row="3" Content="_Database資料庫" FontSize="80" Background="Black" Foreground="White" Click="DatabaseButton_Click"/>
+        <Button Grid.Row="0" Content="_SearchWord單字查詢" FontSize="124" Background="Black" Foreground="White" Click="SearchButton_Click"/>
+        <Button Grid.Row="1" Content="_WordTest單字測驗" FontSize="124" Background="Black" Foreground="White" Click="WordButton_Click"/>
+        <Button Grid.Row="2" Content="_AddWord新增單字" FontSize="124" Background="Black" Foreground="White" Click="AddWordButton_Click"/>
+        <Button Grid.Row="3" Content="_Database資料庫" FontSize="124" Background="Black" Foreground="White" Click="DatabaseButton_Click"/>
     </Grid>
 </Window>

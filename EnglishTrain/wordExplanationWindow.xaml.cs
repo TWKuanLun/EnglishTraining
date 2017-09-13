@@ -13,7 +13,7 @@ namespace EnglishTrain
         public wordExplanationWindow(string word)
         {
             InitializeComponent();
-            word = Regex.Replace(word, "[.']", "", RegexOptions.IgnoreCase);//去除'和.
+            word = Regex.Replace(word, "[.,']", "", RegexOptions.IgnoreCase);//去除'和.和,
             word = getSingularNoun(getVerbRoot(word));//獲得原型動詞與單數
             if (wordDB.Keys.Contains(word))
             {
@@ -34,7 +34,7 @@ namespace EnglishTrain
                 }
             }
             this.word = word;
-            //AutoChangeWindowsFontSize acwfs = new AutoChangeWindowsFontSize(this,1080);
+            AutoChangeWindowsFontSize acwfs = new AutoChangeWindowsFontSize(this,2880);
         }
 
         private void YesButton_Click(object sender, RoutedEventArgs e)

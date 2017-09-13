@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EnglishTrain"
-        mc:Ignorable="d" Background="Black" WindowStartupLocation="CenterScreen"
-        Title="已儲存的單字" Height="702" Width="1246">
+        xmlns:local="clr-namespace:EnglishTrain" 
+        mc:Ignorable="d" Background="Black" WindowStartupLocation="CenterScreen" WindowState="Maximized" 
+        Title="已儲存的單字" Height="1080" Width="1920">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
@@ -22,19 +22,19 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" FontSize="40" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Black" Foreground="White" Content="搜尋單字"/>
-                <Button Grid.Row="0" FontSize="25" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Black" Foreground="White" Content="_Back" Click="BackButton_Click"/>
-                <TextBox Grid.Row="1" Name="SearchTextBox" FontSize="40" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Black" Foreground="White" TextChanged="TextBox_TextChanged"/>
+                <Label Grid.Row="0" FontSize="60" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Black" Foreground="White" Content="搜尋單字"/>
+                <Button Grid.Row="0" FontSize="35" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Black" Foreground="White" Content="_Back" Click="BackButton_Click"/>
+                <TextBox Grid.Row="1" Name="SearchTextBox" FontSize="60" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Black" Foreground="White" TextChanged="TextBox_TextChanged"/>
             </Grid>
-            <Button Grid.Column="1" FontSize="25" Click="RemoveButton_Click" Content="刪除選取的單字" Foreground="White" Background="Black"/>
+            <Button Grid.Column="1" FontSize="40" Click="RemoveButton_Click" Content="刪除選取的單字" Foreground="White" Background="Black"/>
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="4*"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" FontSize="15" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Black" Foreground="White" Content="筆記/註解/備忘錄(綁定該選取單字)"/>
+                <Label Grid.Row="0" FontSize="25" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Black" Foreground="White" Content="筆記/註解/備忘錄(綁定該選取單字)"/>
                 <ScrollViewer Grid.Row="4">
-                    <TextBox Name="remarkTB" FontSize="20" Background="Black" Foreground="White" AcceptsReturn="True" IsEnabled="False"/>
+                    <TextBox Name="remarkTB" FontSize="32" Background="Black" Foreground="White" AcceptsReturn="True" IsEnabled="False"/>
                 </ScrollViewer>
             </Grid>
         </Grid>
@@ -43,8 +43,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
-            <ListBox Name="WordListBox" Grid.Column="0" FontSize="27" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Black" Foreground="White"/>
-            <Button Content="Refresh" FontSize="16" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Click="RefreshButton_Click"/>
+            <ListBox Name="WordListBox" Grid.Column="0" FontSize="40" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Black" Foreground="White"/>
+            <Button Content="Refresh" FontSize="25" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Click="RefreshButton_Click"/>
             <Grid Name="showWordGrid" Grid.Column="1"/>
         </Grid>
     </Grid>
