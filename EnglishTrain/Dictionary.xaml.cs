@@ -1,9 +1,10 @@
-﻿using System;
+﻿using EnglishTrain.cs;
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
-using static EnglishTrain.DataBase;
+using static EnglishTrain.cs.LocalData;
 
 namespace EnglishTrain
 {
@@ -15,7 +16,7 @@ namespace EnglishTrain
         public Dictionary()
         {
             InitializeComponent();
-            AutoChangeWindowsFontSize acwf = new AutoChangeWindowsFontSize(this, 1920);
+            var acwf = new AutoChangeWindowsFontSize(this, 1920);
         }
         private void process()
         {
@@ -23,9 +24,9 @@ namespace EnglishTrain
             word = getSingularNoun(getVerbRoot(word));//獲得原型動詞與單數
             if (word.Equals(String.Empty))
                 return;
-            if (wordDB.Keys.Contains(word))
+            if (Words.Keys.Contains(word))
             {
-                ShowWordExplain showWordExplain = new ShowWordExplain(word, ShowGrid);
+                var showWordExplain = new ShowWordExplain(word, ShowGrid);
             }
             else
             {
@@ -36,7 +37,7 @@ namespace EnglishTrain
                     MessageBox.Show($"Yahoo查無此單字：{word}\n");
                 }else
                 {
-                    ShowWordExplain showWordExplain = new ShowWordExplain(word, ShowGrid);
+                    var showWordExplain = new ShowWordExplain(word, ShowGrid);
                 }
             }
         }
@@ -55,7 +56,7 @@ namespace EnglishTrain
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mw = new MainWindow();
+            var mw = new MainWindow();
             Close();
             mw.Show();
         }

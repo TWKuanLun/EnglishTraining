@@ -1,7 +1,8 @@
-﻿using System.Windows;
-using static EnglishTrain.DataBase;
+﻿using EnglishTrain.cs;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows;
+using static EnglishTrain.cs.LocalData;
 
 namespace EnglishTrain
 {
@@ -15,9 +16,9 @@ namespace EnglishTrain
             InitializeComponent();
             word = Regex.Replace(word, "[.,']", "", RegexOptions.IgnoreCase);//去除'和.和,
             word = getSingularNoun(getVerbRoot(word));//獲得原型動詞與單數
-            if (wordDB.Keys.Contains(word))
+            if (Words.Keys.Contains(word))
             {
-                ShowWordExplain showWordExplain = new ShowWordExplain(word, mainGrid);
+                var showWordExplain = new ShowWordExplain(word, mainGrid);
             }
             else
             {
@@ -30,11 +31,11 @@ namespace EnglishTrain
                 }
                 else
                 {
-                    ShowWordExplain showWordExplain = new ShowWordExplain(word, mainGrid);
+                    var showWordExplain = new ShowWordExplain(word, mainGrid);
                 }
             }
             this.word = word;
-            AutoChangeWindowsFontSize acwfs = new AutoChangeWindowsFontSize(this,2880);
+            var acwfs = new AutoChangeWindowsFontSize(this,2880);
         }
 
         private void YesButton_Click(object sender, RoutedEventArgs e)

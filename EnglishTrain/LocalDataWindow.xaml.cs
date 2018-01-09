@@ -1,26 +1,27 @@
-﻿using System;
+﻿using EnglishTrain.cs;
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using static EnglishTrain.DataBase;
+using static EnglishTrain.cs.LocalData;
 
 namespace EnglishTrain
 {
-    public partial class DatabaseWindow : Window
+    public partial class LocalDataWindow : Window
     {
         string oldWord;
-        public DatabaseWindow()
+        public LocalDataWindow()
         {
             InitializeComponent();
             updataList();
-            AutoChangeWindowsFontSize autoChangeFontSize = new AutoChangeWindowsFontSize(this, 1920);
+            var autoChangeFontSize = new AutoChangeWindowsFontSize(this, 1920);
             oldWord = string.Empty;
         }
 
         private void updataList()//更新listbox
         {
             WordListBox.Items.Clear();
-            var search = DataBase.wordDB.Select(x => x.Value.word).Where(x => x.Contains(SearchTextBox.Text)).OrderByDescending(x => x);
+            var search = LocalData.Words.Select(x => x.Value.word).Where(x => x.Contains(SearchTextBox.Text)).OrderByDescending(x => x);
             foreach (string w in search)
             {
                 WordListBox.Items.Add(w);
@@ -39,8 +40,8 @@ namespace EnglishTrain
                 checkWordRemark(oldWord);
                 string word = WordListBox.SelectedValue.ToString();
                 oldWord = word;
-                ShowWordExplain showWordExplain = new ShowWordExplain(word, showWordGrid);
-                remarkTB.Text = wordDB[word].remark;
+                var showWordExplain = new ShowWordExplain(word, showWordGrid);
+                remarkTB.Text = Words[word].remark;
                 remarkTB.IsEnabled = true;
             }
             else
@@ -55,7 +56,7 @@ namespace EnglishTrain
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mw = new MainWindow();
+            var mw = new MainWindow();
             Close();
             mw.Show();
         }
@@ -69,7 +70,7 @@ namespace EnglishTrain
                 WordListBox.SelectedIndex = 0;
                 oldWord = string.Empty;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 MessageBox.Show("錯誤，無選取單字");
             }
@@ -84,7 +85,7 @@ namespace EnglishTrain
 
         private void checkWordRemark(string word)
         {
-            if (!oldWord.Equals(string.Empty) && !wordDB[word].remark.Equals(remarkTB.Text))
+            if (!oldWord.Equals(string.Empty) && !Words[word].remark.Equals(remarkTB.Text))
                 if (MessageBox.Show("保存筆記/註解/備忘錄?", "您有做了些修改，是否需要保存?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     seveWordRemark(word, remarkTB.Text);

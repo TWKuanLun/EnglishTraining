@@ -1,10 +1,11 @@
-﻿using System;
+﻿using EnglishTrain.cs;
+using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
-using static EnglishTrain.DataBase;
+using static EnglishTrain.cs.LocalData;
 
 namespace EnglishTrain
 {
@@ -14,14 +15,14 @@ namespace EnglishTrain
         public ImportWordWindow()
         {
             InitializeComponent();
-            AutoChangeWindowsFontSize autoChangeFontSize = new AutoChangeWindowsFontSize(this, 1920);
+            var autoChangeFontSize = new AutoChangeWindowsFontSize(this, 1920);
         }
         private void DataProcessing(string wordsString)//處理TextBox文字(將新單字匯入資料庫)
         {
             string[] words = wordsString.Split(new char[] { '\n' }); //TextBox文字以\n劃分各單字
             
-            StringBuilder message = new StringBuilder();
-            StringBuilder newText = new StringBuilder(); //讓成功新增的單字在Textbox上除去
+            var message = new StringBuilder();
+            var newText = new StringBuilder(); //讓成功新增的單字在Textbox上除去
             for (int i = 0; i < words.Length; i++)
             {
                 string word = getVerbRoot(getSingularNoun(words[i]));//獲得動詞原形、單數名詞
@@ -68,7 +69,7 @@ namespace EnglishTrain
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mw = new MainWindow();
+            var mw = new MainWindow();
             Close();
             mw.Show();
         }

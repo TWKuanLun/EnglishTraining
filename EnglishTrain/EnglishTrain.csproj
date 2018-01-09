@@ -60,9 +60,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CustomClass.cs" />
-    <Compile Include="DatabaseWindow.xaml.cs">
-      <DependentUpon>DatabaseWindow.xaml</DependentUpon>
+    <Compile Include="cs\AutoChangeWindowsFontSize.cs" />
+    <Compile Include="cs\LocalData.cs" />
+    <Compile Include="cs\Sentence.cs" />
+    <Compile Include="cs\Word.cs" />
+    <Compile Include="LocalDataWindow.xaml.cs">
+      <DependentUpon>LocalDataWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dictionary.xaml.cs">
       <DependentUpon>Dictionary.xaml</DependentUpon>
@@ -70,13 +73,14 @@
     <Compile Include="ImportWordWindow.xaml.cs">
       <DependentUpon>ImportWordWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="cs\ShowWordExplain.cs" />
     <Compile Include="wordExplanationWindow.xaml.cs">
       <DependentUpon>wordExplanationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WordTestWindow.xaml.cs">
       <DependentUpon>WordTestWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="DatabaseWindow.xaml">
+    <Page Include="LocalDataWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
