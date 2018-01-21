@@ -15,7 +15,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label Grid.Row="1">
-            <TextBlock TextWrapping="Wrap" FontSize="47"  Foreground="White"  Text="在下面Textbox內輸入多個單字，以換行做區隔，按Import後會去網路爬這些單字的資料。"/>
+            <TextBlock TextWrapping="Wrap" FontSize="35"  Foreground="White"  Text="在下面Textbox內輸入多個單字，以換行做區隔，按Import後會去網路爬這些單字的資料。"/>
         </Label>
         <Button Name="BackButton" FontSize="47" Content="_Back↶" HorizontalAlignment="Left" Click="BackButton_Click"/>
         <TextBox Name="inputTextBox" Grid.Row="2" FontSize="60" TextWrapping="Wrap" Background="Black" Foreground="White" AcceptsReturn="True"  VerticalScrollBarVisibility="Visible"/>

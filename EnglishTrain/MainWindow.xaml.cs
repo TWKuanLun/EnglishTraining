@@ -40,5 +40,12 @@ namespace EnglishTrain
             Close();
             d.Show();
         }
+
+        private void SnetenceTest_Click(object sender, RoutedEventArgs e)
+        {
+            var s = new SentencesTest();
+            Close();
+            s.Show();
+        }
     }
 }

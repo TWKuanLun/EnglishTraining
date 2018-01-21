@@ -13,10 +13,12 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Content="_SearchWord單字查詢" FontSize="124" Background="Black" Foreground="White" Click="SearchButton_Click"/>
-        <Button Grid.Row="1" Content="_WordTest單字測驗" FontSize="124" Background="Black" Foreground="White" Click="TestButton_Click"/>
-        <Button Grid.Row="2" Content="_AddWord新增單字" FontSize="124" Background="Black" Foreground="White" Click="ImportWordButton_Click"/>
-        <Button Grid.Row="3" Content="_Database資料庫" FontSize="124" Background="Black" Foreground="White" Click="LocalDataButton_Click"/>
+        <Button Grid.Row="0" Content="_Word單字查詢" FontSize="124" Background="Black" Foreground="White" Click="SearchButton_Click"/>
+        <Button Grid.Row="1" Content="_SentenceTest句子測驗" FontSize="124" Background="Black" Foreground="White" Click="SnetenceTest_Click"/>
+        <Button Grid.Row="2" Content="_WordTest單字測驗" FontSize="124" Background="Black" Foreground="White" Click="TestButton_Click"/>
+        <Button Grid.Row="3" Content="_AddWord新增單字" FontSize="124" Background="Black" Foreground="White" Click="ImportWordButton_Click"/>
+        <Button Grid.Row="4" Content="_Database資料庫" FontSize="124" Background="Black" Foreground="White" Click="LocalDataButton_Click"/>
     </Grid>
 </Window>
