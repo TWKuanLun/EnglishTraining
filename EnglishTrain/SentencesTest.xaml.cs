@@ -85,7 +85,10 @@ namespace EnglishTrain
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            var b = (Button)sender;
+            string word = b.Content.ToString().Substring(0, b.Content.ToString().Length - 1);//去除空白
+            var wordWindow = new wordExplanationWindow(word);
+            wordWindow.Show();
         }
         /// <summary>
         /// 將IList內所有元素隨機位置
