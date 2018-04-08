@@ -1,6 +1,7 @@
 ﻿using NSoup;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -37,36 +38,65 @@ namespace EnglishTrain.cs
                 var htmlDoc = NSoupClient.Parse(htmlstr);
                 try
                 {
-                    var allBlock = htmlDoc.GetElementsByTag("div").First(x => x.Attr("class") == "dd algo explain mt-20 lst DictionaryResults");
-                    var meaningBlock = allBlock.GetElementsByTag("ul").Where(x => x.Attr("class") == "compArticleList mb-15 ml-10").ToArray();
-                    var phonetic = htmlDoc.GetElementsByTag("span").First(x => x.Attr("class") == "cite").Text();
+                    var allBlock = htmlDoc.GetElementsByTag("ol").First(x => x.Attr("class") == "mb-15 reg searchCenterMiddle");
+                    var meaningBlock = allBlock.GetElementsByTag("div").First(x => x.Attr("class") == "grp grp-tab-content-explanation tabsContent tab-content-explanation tabActived");
 
-                    var w = new Word(word, phonetic.Replace('ˋ', '`'));//給word物件單字和音標
+                    var phonetic = htmlDoc.GetElementsByTag("div").First(x => x.Attr("class") == "compList ml-25 d-ib").Text();
+                    phonetic = phonetic.Replace('ˋ', '`');
+
+                    var w = new Word(word, phonetic);//給word物件單字和音標
                     var sentences = new List<Sentence>();
-
-                    var parts = allBlock.GetElementsByTag("h3");
-                    for (int i = 0; i < parts.Count; i++)//詞性
+                    
+                    var rows = meaningBlock.GetElementsByTag("li").ToArray();
+                    var sentencesByPos = new Dictionary<string, Dictionary<string, List<Sentence>>>();
+                    string partOfSpeech = "";
+                    List<string> chiMeaning = null;
+                    for (int i = 0; i < rows.Length; i++)//詞性
                     {
-                        var chiMeaning = new List<string>();
-
-                        var ChiMeaningElements = meaningBlock[i].GetElementsByTag("li");
-                        foreach (var OneMeaning in ChiMeaningElements)
+                        var rowStr = rows[i].Text();
+                        System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"\d+");
+                        System.Text.RegularExpressions.Match match = regex.Match(rowStr);
+                        if (match.Success)
                         {
-                            var sentence = OneMeaning.GetElementsByTag("span").ToArray();
-                            chiMeaning.Add(sentence[0].Text());//0是中文意思，一個中文意思有多個例句
-                            for (int j = 1; j < sentence.Length - 1; j += 2)
+                            //中文意思
+                            var meaning = rows[i].GetElementsByTag("span").First().Text();
+                            chiMeaning.Add(meaning);
+                            if (!sentencesByPos[partOfSpeech].ContainsKey(meaning))
                             {
-                                int index = sentence[j].Text().LastIndexOf(' ');//獲得 例句 與 例句的中文 中間的索引
-
-                                if (index != -1)//沒例句的情形
+                                sentencesByPos[partOfSpeech].Add(meaning, new List<Sentence>());
+                            }
+                            var sentenceElements = rows[i].GetElementsByTag("p");
+                            foreach (var sentenceElement in sentenceElements)
+                            {
+                                var sentence = sentenceElement.Text();
+                                int firstChineseIndex = -1;
+                                for (int j = 0; j < sentence.Length; j++)
                                 {
-                                    var s = new Sentence(sentence[j].Text().Substring(index + 1), sentence[j].Text().Substring(0, index), word, parts[i].Text(), chiMeaning.Count - 1);
-                                    sentences.Add(s);//例句
+                                    UnicodeCategory cat = char.GetUnicodeCategory(sentence[j]);
+                                    if (cat == UnicodeCategory.OtherLetter)
+                                    {
+                                        firstChineseIndex = j;
+                                        break;
+                                    }
                                 }
+                                var engSentence = sentence.Substring(0, firstChineseIndex - 1);
+                                var chiSentence = sentence.Substring(firstChineseIndex);
+                                var s = new Sentence(chiSentence, engSentence, word, partOfSpeech, chiMeaning.Count - 1);
+                                sentencesByPos[partOfSpeech][meaning].Add(s);
+                                sentences.Add(s);
                             }
                         }
-                        w.chineseMeaning[parts[i].Text()] = chiMeaning;//詞性當Key，給key獲得該詞性的所有中文意思
+                        else
+                        {
+                            if(partOfSpeech != string.Empty)
+                                w.chineseMeaning[partOfSpeech] = chiMeaning;
+                            //詞性
+                            partOfSpeech = rowStr;
+                            sentencesByPos[partOfSpeech] = new Dictionary<string, List<Sentence>>();
+                            chiMeaning = new List<string>();
+                        }
                     }
+                    w.chineseMeaning[partOfSpeech] = chiMeaning;
                     Sentances[word] = sentences;
                     Words[word] = w;
                     saveDataToLocal();//儲存資料在本地端
