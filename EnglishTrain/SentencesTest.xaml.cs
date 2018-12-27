@@ -1,26 +1,19 @@
 ﻿using EnglishTrain.cs;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace EnglishTrain
 {
     public partial class SentencesTest : Window
     {
         /// <summary>例句慢速發音</summary>
-        WMPLib.WindowsMediaPlayer SlowPlayer = new WMPLib.WindowsMediaPlayer();
+        MediaPlayerHelper SlowPlayer;
         /// <summary>例句常速發音</summary>
-        WMPLib.WindowsMediaPlayer NormalPlayer = new WMPLib.WindowsMediaPlayer();
+        MediaPlayerHelper NormalPlayer;
         List<Sentence> sentences = new List<Sentence>();
         int nowIndex = 0;
         NowStatus nowStatus = NowStatus.NoEngNoChi;
@@ -75,12 +68,12 @@ namespace EnglishTrain
             }
             #endregion
             ChiLB.Content = nowSentence.Chi;
-            NormalPlayer.URL = $"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q={nowSentence.Eng}";
-            SlowPlayer.URL = $"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&ttsspeed=0.1&q={nowSentence.Eng}";
-            if((bool)SlowVoiceCheckBox.IsChecked)
-                NormalPlayer.controls.stop();
+            NormalPlayer = new MediaPlayerHelper($"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q={nowSentence.Eng}");
+            SlowPlayer = new MediaPlayerHelper($"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&ttsspeed=0.1&q={nowSentence.Eng}");
+            if ((bool)SlowVoiceCheckBox.IsChecked)
+                SlowPlayer.Play();
             else
-                SlowPlayer.controls.stop();
+                NormalPlayer.Play();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -180,17 +173,15 @@ namespace EnglishTrain
 
         private void VoiceBT_Click(object sender, RoutedEventArgs e)
         {
-            SlowPlayer.controls.pause();
-            NormalPlayer.controls.pause();
+            SlowPlayer.Pause();
+            NormalPlayer.Pause();
             if ((bool)SlowVoiceCheckBox.IsChecked)
             {
-                SlowPlayer.controls.currentPosition = 0;
-                SlowPlayer.controls.play();
+                SlowPlayer.PlayFromStart();
             }
             else
             {
-                NormalPlayer.controls.currentPosition = 0;
-                NormalPlayer.controls.play();
+                NormalPlayer.PlayFromStart();
             }
         }
     }

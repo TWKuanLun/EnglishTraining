@@ -1,6 +1,7 @@
 ﻿using EnglishTrain.cs;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -11,36 +12,58 @@ namespace EnglishTrain
     /// <summary>自動產生Word所有資料與畫面設定的Class。</summary>
     class ShowWordExplain
     {
-        /// <summary>單字Yahoo發音</summary>
-        WindowsMediaPlayer YahooPlayer;
-        /// <summary>單字Yahoo發音2，當有兩種發音方式時出現</summary>
-        WindowsMediaPlayer YahooPlayer2;
-        /// <summary>單字Google發音</summary>
-        WindowsMediaPlayer GooglePlayer;
-        /// <summary>單字VoiceTube發音</summary>
-        WindowsMediaPlayer VoiceTubePlayer;
+        /// <summary>單字發音</summary>
+        List<MediaPlayerHelper> WordsPlayer = new List<MediaPlayerHelper>();
+
         /// <summary>句子Google發音</summary>
-        List<WindowsMediaPlayer> SentencePlayer = new List<WindowsMediaPlayer>();
+        List<MediaPlayerHelper> SentencesPlayer = new List<MediaPlayerHelper>();
         string word;
         Button yahooButton2;
         public ShowWordExplain(string word, Grid mainGrid)
         {
             this.word = word;
             #region 播放按鈕設定
-            YahooPlayer = new WindowsMediaPlayer();
-            GooglePlayer = new WindowsMediaPlayer();
-            YahooPlayer2 = new WindowsMediaPlayer();
-            VoiceTubePlayer = new WindowsMediaPlayer();
-            GooglePlayer.URL = $"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q={word}";
-            YahooPlayer.URL = $"https://s.yimg.com/tn/dict/dreye/live/f/{word}.mp3";//有多種念法or男生發音時會失效
-            YahooPlayer2.URL = $"https://s.yimg.com/tn/dict/dreye/live/f/{word}@2.mp3";
-            VoiceTubePlayer.URL = $"https://tw.voicetube.com/player/{word}.mp3";
-            GooglePlayer.controls.stop();
-            //YahooPlayer.controls.stop();//為了測試該單字音檔在yahoo屬於哪種網址
-            YahooPlayer2.controls.stop();
-            VoiceTubePlayer.controls.stop();
+            var wordsPlayerURL = new (string Name, string URL)[]
+            {
+                ("Google", $"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q={word}"),
+                ("VoiceTube", $"https://tw.voicetube.com/player/{word}.mp3"),
+                ("YahooNormal", $"https://s.yimg.com/bg/dict/dreye/live/f/{word}.mp3"),
+                ("YahooNormal2", $"https://s.yimg.com/bg/dict/dreye/live/f/{word}@2.mp3"),
+                ("YahooNormal3", $"https://s.yimg.com/bg/dict/dreye/live/f/{word}@3.mp3"),
+                ("YahooUS1", $"https://s.yimg.com/bg/dict/ox/mp3/v1/{word}@_us_1.mp3"),
+                ("YahooUS2", $"https://s.yimg.com/bg/dict/ox/mp3/v1/{word}@_us_2.mp3"),
+                ("YahooUS3", $"https://s.yimg.com/bg/dict/ox/mp3/v1/{word}@_us_3.mp3"),
+                ("YahooGB1", $"https://s.yimg.com/bg/dict/ox/mp3/v1/{word}@_gb_1.mp3"),
+                ("YahooGB2", $"https://s.yimg.com/bg/dict/ox/mp3/v1/{word}@_gb_2.mp3"),
+                ("YahooGB3", $"https://s.yimg.com/bg/dict/ox/mp3/v1/{word}@_gb_3.mp3")
+            }.Where(x =>
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(x.URL);
+                request.Method = "HEAD";
+                try
+                {
+                    using (var response = (HttpWebResponse)request.GetResponse())
+                    {
+                        // Code here 
+                    }
+                    request.GetResponse();
+                }
+                catch (WebException we)
+                {
+                    HttpWebResponse errorResponse = we.Response as HttpWebResponse;
+                    if (errorResponse.StatusCode == HttpStatusCode.Forbidden ||
+                        errorResponse.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }).ToArray();
+            foreach (var wordPlayerURL in wordsPlayerURL)
+            {
+                WordsPlayer.Add(new MediaPlayerHelper(wordPlayerURL.URL));
+            }
             #endregion
-            YahooPlayer.MediaError += YahooPlayer_MediaError;
             mainGrid.Children.Clear();
             mainGrid.RowDefinitions.Clear();
             mainGrid.RowDefinitions.Add(new RowDefinition());
@@ -68,55 +91,27 @@ namespace EnglishTrain
             mainGrid.Children.Add(scrollViewer);
             #region titleGrid設定 含wordLabel、googleButton、voiceTubeButton、yahooButton
             titleGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            titleGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            titleGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            titleGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            titleGrid.ColumnDefinitions.Add(new ColumnDefinition());
             titleGrid.ColumnDefinitions[0].Width = new GridLength(0, GridUnitType.Auto);
-            titleGrid.ColumnDefinitions[1].Width = new GridLength(0, GridUnitType.Auto);
-            titleGrid.ColumnDefinitions[2].Width = new GridLength(0, GridUnitType.Auto);
-            titleGrid.ColumnDefinitions[3].Width = new GridLength(0, GridUnitType.Auto);
-            titleGrid.ColumnDefinitions[4].Width = new GridLength(0, GridUnitType.Auto);
             Label wordLabel = new Label();
             wordLabel.Content = LocalData.Words[word].word;
             wordLabel.Foreground = Brushes.SkyBlue;
             wordLabel.FontSize = 85;
-            Button googleButton = new Button();
-            googleButton.Content = "_Google(▶)";
-            googleButton.Background = Brushes.Black;
-            googleButton.Foreground = Brushes.White;
-            googleButton.FontSize = 47;
-            googleButton.Click += GoogleButton_Click;
-            Button voiceTubeButton = new Button();
-            voiceTubeButton.Content = "_VoiceTube(▶)";
-            voiceTubeButton.Background = Brushes.Black;
-            voiceTubeButton.Foreground = Brushes.White;
-            voiceTubeButton.FontSize = 47;
-            voiceTubeButton.Click += VoiceTubeButton_Click;
-            Button yahooButton = new Button();
-            yahooButton.Content = "_Yahoo(▶)";
-            yahooButton.Background = Brushes.Black;
-            yahooButton.Foreground = Brushes.White;
-            yahooButton.FontSize = 47;
-            yahooButton.Click += YahooButton_Click;
-            Button yahooButton2 = new Button();
-            this.yahooButton2 = yahooButton2;
-            yahooButton2.Content = "_Yahoo2(▶)";
-            yahooButton2.Background = Brushes.Black;
-            yahooButton2.Foreground = Brushes.White;
-            yahooButton2.FontSize = 47;
-            yahooButton2.Visibility = Visibility.Hidden;
-            yahooButton2.Click += YahooButton2_Click;
             Grid.SetColumn(wordLabel, 0);
-            Grid.SetColumn(googleButton, 1);
-            Grid.SetColumn(voiceTubeButton, 2);
-            Grid.SetColumn(yahooButton, 3);
-            Grid.SetColumn(yahooButton2, 4);
             titleGrid.Children.Add(wordLabel);
-            titleGrid.Children.Add(googleButton);
-            titleGrid.Children.Add(voiceTubeButton);
-            titleGrid.Children.Add(yahooButton);
-            titleGrid.Children.Add(yahooButton2);
+            for (int i = 0; i < wordsPlayerURL.Length; i++)
+            {
+                titleGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                titleGrid.ColumnDefinitions[i + 1].Width = new GridLength(0, GridUnitType.Auto);
+                Button button = new Button();
+                button.Content = $"_{wordsPlayerURL[i].Name}(▶)";
+                button.Background = Brushes.Black;
+                button.Foreground = Brushes.White;
+                button.FontSize = 47;
+                button.Click += WordsPlayerButton_Click;
+                button.Tag = i;
+                Grid.SetColumn(button, i + 1);
+                titleGrid.Children.Add(button);
+            }
             #endregion
             #region dataGrid設定 含詞性、中文意思、例句
             int gridRowIndex = 0;
@@ -178,8 +173,7 @@ namespace EnglishTrain
                             sentenceGrid.Children.Add(button);
                         }
                         #region 句子發音
-                        SentencePlayer.Add(new WMPLib.WindowsMediaPlayer { URL = $"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q={s.Eng}" });
-                        SentencePlayer[sentenceCount].controls.stop();
+                        SentencesPlayer.Add(new MediaPlayerHelper($"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q={s.Eng}"));
                         sentenceGrid.ColumnDefinitions.Add(new ColumnDefinition());
                         sentenceGrid.ColumnDefinitions[sentanceWords.Length + 1].Width = GridLength.Auto;
                         var SentenceVoiceButton = new Button();
@@ -215,29 +209,12 @@ namespace EnglishTrain
 
         private void SentenceVoiceButton_Click(object sender, RoutedEventArgs e)
         {
-            Button b = (Button)sender;
-            foreach (WMPLib.WindowsMediaPlayer p in SentencePlayer)
+            Button button = (Button)sender;
+            foreach (var sentencePlayer in SentencesPlayer)
             {
-                p.controls.pause();
+                sentencePlayer.Pause();
             }
-            SentencePlayer[(int)b.Tag].controls.currentPosition = 0;
-            SentencePlayer[(int)b.Tag].controls.play();
-        }
-
-        int status = 0;
-        private void YahooPlayer_MediaError(object pMediaObject)
-        {
-            if (status == 0)//女生發音失敗時
-            {
-                YahooPlayer.URL = $"https://s.yimg.com/tn/dict/dreye/live/m/{word}.mp3";
-                status++;
-            }
-            else//男女生都發音失敗時
-            {
-                YahooPlayer.URL = $"https://s.yimg.com/tn/dict/dreye/live/f/{word}@1.mp3";
-                yahooButton2.Visibility = Visibility.Visible;
-                status = 0;
-            }
+            SentencesPlayer[(int)button.Tag].PlayFromStart();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -248,44 +225,14 @@ namespace EnglishTrain
             wordWindow.Show();
         }
 
-        private void VoiceTubeButton_Click(object sender, RoutedEventArgs e)
+        private void WordsPlayerButton_Click(object sender, RoutedEventArgs e)
         {
-            GooglePlayer.controls.pause();
-            YahooPlayer.controls.pause();
-            YahooPlayer2.controls.pause();
-            VoiceTubePlayer.controls.pause();
-            VoiceTubePlayer.controls.currentPosition = 0;
-            VoiceTubePlayer.controls.play();
-        }
-
-        private void YahooButton2_Click(object sender, RoutedEventArgs e)
-        {
-            GooglePlayer.controls.pause();
-            YahooPlayer.controls.pause();
-            YahooPlayer2.controls.pause();
-            VoiceTubePlayer.controls.pause();
-            YahooPlayer2.controls.currentPosition = 0;
-            YahooPlayer2.controls.play();
-        }
-
-        private void YahooButton_Click(object sender, RoutedEventArgs e)
-        {
-            GooglePlayer.controls.pause();
-            YahooPlayer.controls.pause();
-            YahooPlayer2.controls.pause();
-            VoiceTubePlayer.controls.pause();
-            YahooPlayer.controls.currentPosition = 0;
-            YahooPlayer.controls.play();
-        }
-
-        private void GoogleButton_Click(object sender, RoutedEventArgs e)
-        {
-            GooglePlayer.controls.pause();
-            YahooPlayer.controls.pause();
-            YahooPlayer2.controls.pause();
-            VoiceTubePlayer.controls.pause();
-            GooglePlayer.controls.currentPosition = 0;
-            GooglePlayer.controls.play();
+            Button button = (Button)sender;
+            foreach (var wordPlayer in WordsPlayer)
+            {
+                wordPlayer.Pause();
+            }
+            WordsPlayer[(int)button.Tag].PlayFromStart();
         }
     }
 }

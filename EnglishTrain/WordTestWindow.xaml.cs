@@ -10,13 +10,13 @@ namespace EnglishTrain
     public partial class WordTestWindow : Window
     {
         /// <summary>單字Yahoo發音</summary>
-        WMPLib.WindowsMediaPlayer VoiceTubePlayer;
+        MediaPlayerHelper VoiceTubePlayer;
         /// <summary>單字Google發音</summary>
-        WMPLib.WindowsMediaPlayer GooglePlayer;
+        MediaPlayerHelper GooglePlayer;
         /// <summary>例句慢速發音</summary>
-        List<WMPLib.WindowsMediaPlayer> SlowPlayer = new List<WMPLib.WindowsMediaPlayer>();
+        List<MediaPlayerHelper> SlowPlayer = new List<MediaPlayerHelper>();
         /// <summary>例句常速發音</summary>
-        List<WMPLib.WindowsMediaPlayer> NormalPlayer = new List<WMPLib.WindowsMediaPlayer>();
+        List<MediaPlayerHelper> NormalPlayer = new List<MediaPlayerHelper>();
         /// <summary>目前的狀態</summary>
         UIVisibilityState CurrentState = UIVisibilityState.OnlyVoice;
         /// <summary>UI的狀態種類</summary>
@@ -27,8 +27,6 @@ namespace EnglishTrain
         public WordTestWindow()
         {
             InitializeComponent();
-            VoiceTubePlayer = new WMPLib.WindowsMediaPlayer();
-            GooglePlayer = new WMPLib.WindowsMediaPlayer();
             setTest();
             var autoChangeFontSize = new AutoChangeWindowsFontSize(this, 1920);
         }
@@ -60,16 +58,8 @@ namespace EnglishTrain
                 var word = LocalData.Words[wordstr];
 
                 //設題目時先載入音檔，避免每次播放都要載入。
-                GooglePlayer.URL = $"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q={wordstr}";
-                VoiceTubePlayer.URL = $"https://tw.voicetube.com/player/{wordstr}.mp3";
-                if ((bool)GoogleRadioButton.IsChecked)
-                {
-                    VoiceTubePlayer.controls.stop();
-                }
-                else
-                {
-                    GooglePlayer.controls.stop();
-                }
+                GooglePlayer = new MediaPlayerHelper($"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q={wordstr}");
+                VoiceTubePlayer = new MediaPlayerHelper($"https://tw.voicetube.com/player/{wordstr}.mp3");
                 phoneticSymbolLabel.Content = word.phoneticSymbol;//show音標
                 ChiTextBlock.Text = "";
                 foreach (var s in word.chineseMeaning)//show詞性、中文意思
@@ -81,10 +71,8 @@ namespace EnglishTrain
                 for (int i = 0; i < LocalData.Sentances[wordstr].Count; i++)
                 {
                     //載入例句音檔
-                    NormalPlayer.Add(new WMPLib.WindowsMediaPlayer { URL= $"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q={LocalData.Sentances[wordstr][i].Eng}" });
-                    NormalPlayer[i].controls.stop();
-                    SlowPlayer.Add(new WMPLib.WindowsMediaPlayer { URL = $"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&ttsspeed=0.1&q={LocalData.Sentances[wordstr][i].Eng}" });
-                    SlowPlayer[i].controls.stop();
+                    NormalPlayer.Add(new MediaPlayerHelper($"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q={LocalData.Sentances[wordstr][i].Eng}"));
+                    SlowPlayer.Add(new MediaPlayerHelper($"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&ttsspeed=0.1&q={LocalData.Sentances[wordstr][i].Eng}"));
                     //新增英文和中文的Row
                     SentenceGrid.RowDefinitions.Add(new RowDefinition());
                     SentenceGrid.RowDefinitions.Add(new RowDefinition());
@@ -154,23 +142,21 @@ namespace EnglishTrain
         private void SentanceVoiceButton_Click(object sender, RoutedEventArgs e)
         {
             var b = (Button)sender;
-            foreach (WMPLib.WindowsMediaPlayer p in SlowPlayer)
+            foreach (var slowPlayer in SlowPlayer)
             {
-                p.controls.pause();
+                slowPlayer.Pause();
             }
-            foreach (WMPLib.WindowsMediaPlayer p in NormalPlayer)
+            foreach (var normalPlayer in NormalPlayer)
             {
-                p.controls.pause();
+                normalPlayer.Pause();
             }
             if ((bool)SlowVoiceCheckBox.IsChecked)
             {
                 
-                SlowPlayer[(int)b.Tag].controls.currentPosition = 0;
-                SlowPlayer[(int)b.Tag].controls.play();
+                SlowPlayer[(int)b.Tag].PlayFromStart();
             }else
             {
-                NormalPlayer[(int)b.Tag].controls.currentPosition = 0;
-                NormalPlayer[(int)b.Tag].controls.play();
+                NormalPlayer[(int)b.Tag].PlayFromStart();
             }
         }
 
@@ -178,17 +164,15 @@ namespace EnglishTrain
         {
             if ((bool)GoogleRadioButton.IsChecked)
             {
-                GooglePlayer.controls.pause();
-                VoiceTubePlayer.controls.pause();
-                GooglePlayer.controls.currentPosition = 0;
-                GooglePlayer.controls.play();
+                GooglePlayer.Pause();
+                VoiceTubePlayer.Pause();
+                GooglePlayer.PlayFromStart();
             }
             else//否則Yahoo發音
             {
-                GooglePlayer.controls.pause();
-                VoiceTubePlayer.controls.pause();
-                VoiceTubePlayer.controls.currentPosition = 0;
-                VoiceTubePlayer.controls.play();
+                GooglePlayer.Pause();
+                VoiceTubePlayer.Pause();
+                VoiceTubePlayer.PlayFromStart();
             }
         }
         
