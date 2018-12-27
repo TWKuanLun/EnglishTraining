@@ -184,15 +184,15 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="PublishFile\sentanceDB.txt">
+    <Content Include="sentanceDB.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="PublishFile\verb.txt">
+    </Content>
+    <Content Include="verb.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="PublishFile\wordDB.txt">
+    </Content>
+    <Content Include="wordDB.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
